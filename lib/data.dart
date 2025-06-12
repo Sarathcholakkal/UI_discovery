@@ -6,10 +6,11 @@ class Article {
   final int likes;
   final int comments;
   final int shares;
+  final double rating;
   bool isLiked = false;
 
   Article(this.title, this.image, this.comments, this.likes, this.isLiked,
-      this.location, this.shares, this.author);
+      this.location, this.shares, this.author, this.rating);
 }
 
 List<Article> articles = [
@@ -21,7 +22,8 @@ List<Article> articles = [
       true,
       'Osaka Japan',
       50,
-      'Hussain Mustafa'),
+      'Hussain Mustafa',
+      4),
   Article(
       'Known as the sleepless town for obvious reasons',
       'https://images.wallpaperscraft.com/image/single/road_marking_bridge_123398_1280x720.jpg',
@@ -30,7 +32,8 @@ List<Article> articles = [
       true,
       'Kabuikicho Japan',
       1250,
-      'Tim Salvatore'),
+      'Tim Salvatore',
+      3),
   Article(
       'Japan\'s second largest metropolitan area',
       'https://images.wallpaperscraft.com/image/single/castle_cliff_hill_127420_1280x720.jpg',
@@ -39,5 +42,6 @@ List<Article> articles = [
       true,
       'Tokyo Japan',
       1000,
-      'Ely Marya'),
+      'Ely Marya',
+      2.4),
 ];

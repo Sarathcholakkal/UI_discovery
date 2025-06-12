@@ -113,10 +113,12 @@ class _HomePagesState extends State<HomePages> {
 
   Widget _articleList(BuildContext context) {
     return Expanded(
-        child: ListView.builder(
-            itemCount: articles.length,
-            itemBuilder: (context, index) {
-              return Padding(
+      child: ListView.builder(
+        itemCount: articles.length,
+        itemBuilder: (context, index) {
+          return Stack(
+            children: [
+              Padding(
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).size.height * 0.05),
                 child: ClipRRect(
@@ -137,8 +139,16 @@ class _HomePagesState extends State<HomePages> {
                     child: _articleInfoColumn(context, index),
                   ),
                 ),
-              );
-            }));
+              ),
+              Positioned(
+                  left: MediaQuery.of(context).size.width * 0.10,
+                  bottom: 30,
+                  child: _socialInfoContainer(context, index))
+            ],
+          );
+        },
+      ),
+    );
   }
 
   Widget _articleInfoColumn(BuildContext context, int index) {
@@ -150,7 +160,12 @@ class _HomePagesState extends State<HomePages> {
         Padding(
           padding: EdgeInsets.fromLTRB(10, 10, 30, 0),
           child: _authorInfoColumn(context, index),
-        )
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(
+              MediaQuery.of(context).size.height * 0.05, 30, 0, 0),
+          child: _detailInfoRow(context, index),
+        ),
       ],
     );
   }
@@ -217,6 +232,134 @@ class _HomePagesState extends State<HomePages> {
           ],
         )
       ],
+    );
+  }
+
+  Widget _detailInfoRow(BuildContext _context, int _index) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.max,
+      // crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        FloatingActionButton(
+          shape: CircleBorder(),
+          onPressed: () {},
+          backgroundColor: Colors.white,
+          child: Icon(
+            Icons.play_arrow,
+            color: Colors.redAccent,
+            size: 30,
+          ),
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Container(
+              width: MediaQuery.of(_context).size.width * 0.50,
+              child: Text(
+                articles[_index].title,
+                maxLines: 3,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            Text(
+              articles[_index].location,
+              maxLines: 3,
+              style: TextStyle(
+                  color: Colors.white54,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400),
+            ),
+            _ratingWidget(context, _index)
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget _socialInfoContainer(BuildContext ctx, int index) {
+    return Container(
+      height: MediaQuery.of(ctx).size.height * 0.08,
+      width: MediaQuery.of(ctx).size.width * 0.70,
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(20)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Icon(
+                Icons.favorite_border,
+                color: Colors.grey,
+              ),
+              Text(
+                articles[index].likes.toString(),
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Icon(
+                Icons.mode_comment,
+                color: Colors.redAccent,
+              ),
+              Text(
+                articles[index].comments.toString(),
+                style: TextStyle(color: Colors.redAccent),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Icon(
+                Icons.share,
+                color: Colors.grey,
+              ),
+              Text(
+                articles[index].shares.toString(),
+                style: TextStyle(color: Colors.grey),
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _ratingWidget(BuildContext ctx, int index) {
+    return Row(
+      children: List.generate(5, (i) {
+        double rating = articles[index].rating;
+        double fillAmount = rating - i;
+
+        Icon starIcon;
+        if (fillAmount >= 1) {
+          starIcon = Icon(Icons.star, color: Colors.amberAccent, size: 15);
+        } else if (fillAmount >= 0.5) {
+          starIcon = Icon(Icons.star_half, color: Colors.amberAccent, size: 15);
+        } else {
+          starIcon =
+              Icon(Icons.star_border, color: Colors.amberAccent, size: 15);
+        }
+
+        return starIcon;
+      }),
     );
   }
 }
